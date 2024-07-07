@@ -3,9 +3,13 @@ package ssuPlector.ai.openAI.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChatGptRequest {
 
     private String model;
