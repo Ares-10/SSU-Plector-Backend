@@ -56,6 +56,11 @@ kakao:
   auth:
     client: ${KAKAO_CLIENT_ID}
     redirect-uri: ${KAKAO_REDIRECT_URI}
+openai:
+  model: gpt-3.5-turbo
+  api:
+    key: ${OPENAI_API_KEY}
+    url: "https://api.openai.com/v1/chat/completions"
 ---
 # DEV
 spring:
@@ -106,3 +111,8 @@ kakao:
   auth:
     client: ${KAKAO_CLIENT_ID}
     redirect-uri: ${KAKAO_REDIRECT_URI}
+openai:
+  model: gpt-3.5-turbo
+  api:
+    key: ${OPENAI_API_KEY}
+    url: "https://api.openai.com/v1/chat/completions"
