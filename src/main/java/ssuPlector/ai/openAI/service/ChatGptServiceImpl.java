@@ -8,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 
 import ssuPlector.ai.openAI.dto.ChatGptRequest;
 import ssuPlector.ai.openAI.dto.ChatGptResponse;
+import ssuPlector.global.exception.GlobalException;
+import ssuPlector.global.response.code.GlobalErrorCode;
 
 @Service
 public class ChatGptServiceImpl implements ChatGptService {
@@ -26,12 +28,14 @@ public class ChatGptServiceImpl implements ChatGptService {
 
         ChatGptRequest chatGptRequest = new ChatGptRequest(model, query);
 
-        ChatGptResponse response =
-                restTemplate.postForObject(
-                        apiUrl, getHttpEntity(chatGptRequest), ChatGptResponse.class);
-
-        assert response != null;
-        return response.getChoices().get(0).getMessage().getContent();
+        try {
+            ChatGptResponse response =
+                    restTemplate.postForObject(
+                            apiUrl, getHttpEntity(chatGptRequest), ChatGptResponse.class);
+            return response.getChoices().get(0).getMessage().getContent();
+        } catch (Exception e) {
+            throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
+        }
     }
 
     private HttpEntity<ChatGptRequest> getHttpEntity(ChatGptRequest chatRequest) {
