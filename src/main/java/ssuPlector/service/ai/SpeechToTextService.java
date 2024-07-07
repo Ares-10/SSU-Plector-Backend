@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
+import ssuPlector.global.exception.GlobalException;
+import ssuPlector.global.response.code.GlobalErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class SpeechToTextService {
 
             audioFile.delete();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
         return chatGptSummaryService.summarize(totalText.toString().trim());
