@@ -37,7 +37,11 @@ public enum GlobalErrorCode {
     NOT_CONTAIN_TOKEN(HttpStatus.NOT_FOUND, "AUTH_4004", "해당하는 토큰이 저장되어있지 않습니다."),
     NOT_EQUAL_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_4005", "리프레시 토큰이 다릅니다."),
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "AUTH_4006", "사용자를 찾을 수 없습니다."),
-    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "AUTH_4007", "지원하지 않는 토큰입니다.");
+    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "AUTH_4007", "지원하지 않는 토큰입니다."),
+
+    // OpenAI
+    TIME_TOO_SHORT(HttpStatus.BAD_REQUEST, "OPENAI4001", "입력시간이 너무 작습니다."),
+    NO_PARTICIPANTS(HttpStatus.BAD_REQUEST, "OPENAI4002", "참여자가 없습니다.");
 
     private final HttpStatus httpStatus;
 
