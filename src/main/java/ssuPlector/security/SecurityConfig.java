@@ -68,7 +68,7 @@ public class SecurityConfig {
                                         "/api/projects/list",
                                         "/api/projects",
                                         "/api/developers/dummy",
-                                        "/api/speechToText")
+                                        "/api/pm/summary")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());
