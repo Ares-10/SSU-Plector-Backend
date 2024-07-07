@@ -1,4 +1,4 @@
-package ssuPlector.service.ai;
+package ssuPlector.ai.naverCloud;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -15,7 +15,7 @@ import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 
 @Component
-public class NaverClovaService {
+public class ClovaServiceImpl implements ClovaService {
 
     private final ObjectMapper objectMapper;
     private final WebClient webClient;
@@ -26,7 +26,7 @@ public class NaverClovaService {
     @Value("${naver.cloud.secret}")
     String clientSecret;
 
-    public NaverClovaService(ObjectMapper objectMapper) {
+    public ClovaServiceImpl(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.webClient =
                 WebClient.builder().baseUrl("https://naveropenapi.apigw.ntruss.com").build();

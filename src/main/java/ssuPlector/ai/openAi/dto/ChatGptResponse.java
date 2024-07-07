@@ -1,4 +1,4 @@
-package ssuPlector.service.ai.chatgpt;
+package ssuPlector.ai.openAi.dto;
 
 import java.util.List;
 
@@ -18,6 +18,6 @@ public class ChatGptResponse {
     @NoArgsConstructor
     public static class Choice {
         private int index;
-        private ssuPlector.service.ai.chatgpt.Message Message;
+        private ssuPlector.ai.openAi.dto.Message Message;
     }
 }

@@ -1,4 +1,4 @@
-package ssuPlector.service.ai.chatgpt;
+package ssuPlector.ai.openAi.dto;
 
 import java.util.ArrayList;
 import java.util.List;

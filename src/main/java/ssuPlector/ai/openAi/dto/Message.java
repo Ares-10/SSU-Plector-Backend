@@ -1,4 +1,4 @@
-package ssuPlector.service.ai.chatgpt;
+package ssuPlector.ai.openAi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

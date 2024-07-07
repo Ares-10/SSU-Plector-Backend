@@ -10,17 +10,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
+import ssuPlector.ai.naverCloud.ClovaServiceImpl;
+import ssuPlector.ai.openAi.ChatGptServiceImpl;
 import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 
 @Service
 @RequiredArgsConstructor
-public class SpeechToTextService {
+public class PmServiceImpl implements PmService {
 
-    private final NaverClovaService naverClovaService;
-    private final ChatGptSummaryService chatGptSummaryService;
+    private final ClovaServiceImpl clovaService;
+    private final ChatGptServiceImpl chatGptService;
 
-    public String convertSpeechToText(MultipartFile file) {
+    public String summarize(MultipartFile file) {
 
         StringBuilder totalText = new StringBuilder();
 
@@ -34,7 +36,7 @@ public class SpeechToTextService {
             List<File> chunks = splitAudio(audioFile, 60);
 
             for (File chunk : chunks) {
-                String text = naverClovaService.soundToText(chunk);
+                String text = clovaService.soundToText(chunk);
                 totalText.append(text).append(" ");
                 chunk.delete();
             }
@@ -44,7 +46,7 @@ public class SpeechToTextService {
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
-        return chatGptSummaryService.summarize(totalText.toString().trim());
+        return chatGptService.summarizeText(totalText.toString().trim());
     }
 
     private List<File> splitAudio(File inputFile, int chunkDurationInSeconds) throws Exception {
