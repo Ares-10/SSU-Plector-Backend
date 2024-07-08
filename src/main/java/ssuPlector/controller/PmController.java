@@ -1,9 +1,7 @@
 package ssuPlector.controller;
 
-import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +21,9 @@ public class PmController {
     private final PmService pmService;
 
     @Operation(summary = "회의 진행", description = "입력 값을 받아 회의 진행을 추천합니다._숙희")
-    @PostMapping("/meeting")
+    @GetMapping("/meeting")
     public ApiResponse<String> recommendMeetingProgress(
-            @Valid @RequestBody PmRequestDTO pmRequestDTO,
+            @ModelAttribute PmRequestDTO pmRequestDTO,
             @RequestParam(value = "time") long time,
             @RequestParam(value = "numberOfParticipants") int numberOfParticipants) {
         String meeting = pmService.recommendMeeting(pmRequestDTO, time, numberOfParticipants);
