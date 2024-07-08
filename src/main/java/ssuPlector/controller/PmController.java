@@ -15,7 +15,7 @@ import ssuPlector.service.pm.PmService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/pm")
+@RequestMapping("/api/assistant/pm")
 @Tag(name = "PM AI 팀원 🤖", description = "PM AI 팀원 기능 관련 API")
 public class PmController {
     private final PmService pmService;
