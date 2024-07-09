@@ -68,6 +68,7 @@ public class SecurityConfig {
                                         "/api/projects/list",
                                         "/api/projects",
                                         "/api/developers/dummy",
+                                        "/api/assistant/pm/summary",
                                         "/api/assistant/pm/meeting")
                                 .permitAll()
                                 .anyRequest()

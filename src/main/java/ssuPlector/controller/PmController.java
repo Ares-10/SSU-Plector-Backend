@@ -1,10 +1,8 @@
 package ssuPlector.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,5 +26,11 @@ public class PmController {
             @RequestParam(value = "numberOfParticipants") int numberOfParticipants) {
         String meeting = pmService.recommendMeeting(pmRequestDTO, time, numberOfParticipants);
         return ApiResponse.onSuccess("회의 진행 추천 완료", meeting);
+    }
+
+    @Operation(summary = "음성 회의록 정리", description = "음성 회의록을 정리 요약합니다._찬민")
+    @PostMapping(value = "/summary", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<String> summary(@RequestPart("file") MultipartFile file) {
+        return ApiResponse.onSuccess("음성 회의록 정리 완료", pmService.summarize(file));
     }
 }
