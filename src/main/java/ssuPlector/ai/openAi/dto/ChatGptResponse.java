@@ -2,22 +2,22 @@ package ssuPlector.ai.openAi.dto;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatGptResponse {
 
     private List<Choice> choices;
 
-    @Data
+    @Getter
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Choice {
         private int index;
-        private ssuPlector.ai.openAi.dto.Message Message;
+        private Message Message;
     }
 }
