@@ -26,7 +26,8 @@ public class PmServiceImpl implements PmService {
     private final ClovaService clovaService;
 
     @Override
-    public String recommendMeeting(PmRequestDTO pmRequestDTO, long time, int numberOfParticipants) {
+    public List<Long> recommendMeeting(
+            PmRequestDTO pmRequestDTO, long time, int numberOfParticipants) {
         long minutes = time / (1000 * 60);
 
         if (minutes == 0) {
@@ -35,7 +36,7 @@ public class PmServiceImpl implements PmService {
         if (numberOfParticipants == 0) {
             throw new GlobalException(GlobalErrorCode.NO_PARTICIPANTS);
         }
-
+        List<Boolean> meetingTodoList = new ArrayList<>();
         Field[] fields = pmRequestDTO.getClass().getDeclaredFields();
         StringBuilder todo = new StringBuilder();
         StringBuilder todoFormat = new StringBuilder();
@@ -44,6 +45,7 @@ public class PmServiceImpl implements PmService {
             field.setAccessible(true);
             try {
                 boolean value = field.getBoolean(pmRequestDTO);
+                meetingTodoList.add(value);
                 if (value) {
                     todo.append(MeetingTodo.fromValue(field.getName())).append("\n");
                     todoFormat.append(MeetingTodo.fromValue(field.getName())).append(":00분\n");
@@ -62,7 +64,22 @@ public class PmServiceImpl implements PmService {
                         + "에 대해서 시간 분배를 해줘. 다른것 추가하지 말고 아래의 형식대로만 보내줘\n"
                         + todoFormat;
 
-        return chatGptService.recommendMeetingToDo(query);
+        String result = chatGptService.recommendMeetingToDo(query);
+
+        List<Long> timeList = new ArrayList<>();
+        String[] split = result.split("\n");
+        int cnt = 0;
+        for (Boolean meetingTodo : meetingTodoList) {
+            if (!meetingTodo) {
+                timeList.add(-1L);
+            } else {
+                String s = split[cnt];
+                String second = s.replaceAll("[^0-9]", "");
+                timeList.add(Long.parseLong(second) * 60000);
+                cnt++;
+            }
+        }
+        return timeList;
     }
 
     public String summarize(MultipartFile file) {
