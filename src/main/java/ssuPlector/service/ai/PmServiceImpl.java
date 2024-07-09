@@ -46,8 +46,7 @@ public class PmServiceImpl implements PmService {
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
-        // return chatGptService.summarizeText(totalText.toString().trim());
-        return clovaService.summarizeText(totalText.toString().trim());
+        return chatGptService.summarizeText(totalText.toString().trim());
     }
 
     private List<File> splitAudio(File inputFile, int chunkDurationInSeconds) throws Exception {
