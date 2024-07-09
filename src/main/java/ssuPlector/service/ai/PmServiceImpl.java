@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
-import ssuPlector.ai.naverCloud.ClovaServiceImpl;
-import ssuPlector.ai.openAi.ChatGptServiceImpl;
+import ssuPlector.ai.naverCloud.service.ClovaService;
+import ssuPlector.ai.openAi.service.ChatGptService;
 import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 
@@ -19,8 +19,8 @@ import ssuPlector.global.response.code.GlobalErrorCode;
 @RequiredArgsConstructor
 public class PmServiceImpl implements PmService {
 
-    private final ClovaServiceImpl clovaService;
-    private final ChatGptServiceImpl chatGptService;
+    private final ClovaService clovaService;
+    private final ChatGptService chatGptService;
 
     public String summarize(MultipartFile file) {
 
@@ -46,7 +46,8 @@ public class PmServiceImpl implements PmService {
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
-        return chatGptService.summarizeText(totalText.toString().trim());
+        // return chatGptService.summarizeText(totalText.toString().trim());
+        return clovaService.summarizeText(totalText.toString().trim());
     }
 
     private List<File> splitAudio(File inputFile, int chunkDurationInSeconds) throws Exception {
