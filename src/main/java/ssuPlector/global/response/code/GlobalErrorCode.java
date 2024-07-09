@@ -42,7 +42,7 @@ public enum GlobalErrorCode {
     // PM AI 팀원
     INSUFFICIENT_VALID_SENTENCE(HttpStatus.BAD_REQUEST, "PM4001", "요약할 수 있는 유효한 문장이 부족합니다"),
     EMPTY_TEXT(HttpStatus.BAD_REQUEST, "PM4002", "지원하지 않는 빈 텍스트입니다"),
-    TEXT_QUOTA_EXCEEDED(HttpStatus.BAD_REQUEST, "PM4003", "요약할 수 있는 텍스트 할당량을 초과했습니다");
+    TEXT_QUOTA_EXCEEDED(HttpStatus.BAD_REQUEST, "PM4003", "요약할 수 있는 텍스트 할당량을 초과했습니다"),
 
     // OpenAI
     TIME_TOO_SHORT(HttpStatus.BAD_REQUEST, "OPENAI4001", "입력시간이 너무 작습니다."),
