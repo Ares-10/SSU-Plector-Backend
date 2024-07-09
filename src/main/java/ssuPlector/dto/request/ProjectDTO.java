@@ -61,7 +61,7 @@ public class ProjectDTO {
         @MaxSizeThree private List<DevTools> devToolList;
         @MaxSizeThree private List<TechStack> techStackList;
 
-        private List<ProjectDeveloperRequestDTO> projectDevloperList;
+        private List<Long> projectDevloperList;
     }
 
     @Getter
