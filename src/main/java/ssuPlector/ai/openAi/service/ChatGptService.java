@@ -1,4 +1,4 @@
-package ssuPlector.ai.openAi;
+package ssuPlector.ai.openAi.service;
 
 public interface ChatGptService {
 

@@ -1,4 +1,4 @@
-package ssuPlector.ai.openAi;
+package ssuPlector.ai.openAi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,19 @@ public class ChatGptServiceImpl implements ChatGptService {
     @Autowired private RestTemplate restTemplate;
 
     public String summarizeText(String text) {
-        text = "다음 텍스트를 회의록 형식에 맞게 요약해서 정리한 결과물을 반환해주세요.\n" + text;
+        text =
+                "다음 텍스트를 프로젝트 회의록 형식에 맞게 요약해서 정리한 결과물을 반환해주세요. "
+                        + "프로젝트 회의록 형식은 다음과 같아야 합니다:\n"
+                        + "1. 회의 제목: [제목]\n"
+                        + "2. 회의 날짜: [날짜]\n"
+                        + "3. 참석자: [참석자 목록]\n"
+                        + "4. 회의 목적: [목적]\n"
+                        + "5. 진행 상황 공유: [진행 상황]\n"
+                        + "6. 이슈 및 리스크: [이슈 및 리스크]\n"
+                        + "7. 주요 논의 사항: [논의된 주요 사항들]\n"
+                        + "8. 결론: [결론]\n"
+                        + "9. 다음 단계: [향후 계획 및 액션 아이템]\n\n"
+                        + text;
 
         ChatGptRequest request = new ChatGptRequest(model, text);
         ChatGptResponse response =
