@@ -37,7 +37,12 @@ public enum GlobalErrorCode {
     NOT_CONTAIN_TOKEN(HttpStatus.NOT_FOUND, "AUTH_4004", "해당하는 토큰이 저장되어있지 않습니다."),
     NOT_EQUAL_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_4005", "리프레시 토큰이 다릅니다."),
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "AUTH_4006", "사용자를 찾을 수 없습니다."),
-    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "AUTH_4007", "지원하지 않는 토큰입니다.");
+    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "AUTH_4007", "지원하지 않는 토큰입니다."),
+
+    // PM AI 팀원
+    INSUFFICIENT_VALID_SENTENCE(HttpStatus.BAD_REQUEST, "PM4001", "요약할 수 있는 유효한 문장이 부족합니다"),
+    EMPTY_TEXT(HttpStatus.BAD_REQUEST, "PM4002", "지원하지 않는 빈 텍스트입니다"),
+    TEXT_QUOTA_EXCEEDED(HttpStatus.BAD_REQUEST, "PM4003", "요약할 수 있는 텍스트 할당량을 초과했습니다");
 
     private final HttpStatus httpStatus;
 
