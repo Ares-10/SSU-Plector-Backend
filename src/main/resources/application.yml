@@ -4,6 +4,10 @@ spring:
     name: SSUPlector
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 springdoc:
   swagger-ui:
     tags-sorter: alpha
