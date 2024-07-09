@@ -133,4 +133,3 @@ logging:
   file:
     path: /var/log
     name: spring-boot-app.log
-    url: "https://api.openai.com/v1/chat/completions"
