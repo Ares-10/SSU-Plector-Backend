@@ -62,8 +62,8 @@ kakao:
     redirect-uri: ${KAKAO_REDIRECT_URI}
 naver:
   cloud:
-    id: ${NAVER_CLOUD_ID}
-    secret: ${NAVER_CLOUD_SECRET}
+    clovaSpeech:
+      client-secret: ${NAVER_CLOVA_SPEECH_CLIENT_SECRET}
 openai:
   model: gpt-3.5-turbo
   api:
@@ -121,8 +121,8 @@ kakao:
     redirect-uri: ${KAKAO_REDIRECT_URI}
 naver:
   cloud:
-    id: ${NAVER_CLOUD_ID}
-    secret: ${NAVER_CLOUD_SECRET}
+    clovaSpeech:
+      client-secret: ${NAVER_CLOVA_SPEECH_CLIENT_SECRET}
 openai:
   model: gpt-3.5-turbo
   api:

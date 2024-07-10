@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
-import ssuPlector.ai.naverCloud.service.ClovaService;
+import ssuPlector.ai.naverCloud.service.ClovaSpeechService;
 import ssuPlector.ai.openAI.service.ChatGptService;
 import ssuPlector.domain.category.MeetingTodo;
 import ssuPlector.dto.request.PmDTO.PmRequestDTO;
@@ -23,7 +23,7 @@ import ssuPlector.global.response.code.GlobalErrorCode;
 public class PmServiceImpl implements PmService {
 
     private final ChatGptService chatGptService;
-    private final ClovaService clovaService;
+    private final ClovaSpeechService clovaSpeechService;
 
     @Override
     public List<Long> recommendMeeting(
@@ -93,59 +93,13 @@ public class PmServiceImpl implements PmService {
             fos.write(file.getBytes()); // 파일에 바이트 배열 쓰기
             fos.close(); // 출력 스트림 닫기
 
-            List<File> chunks = splitAudio(audioFile, 60);
-
-            for (File chunk : chunks) {
-                String text = clovaService.soundToText(chunk);
-                totalText.append(text).append(" ");
-                chunk.delete();
-            }
+            totalText.append(clovaSpeechService.convert(audioFile));
 
             audioFile.delete();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
         return chatGptService.summarizeText(totalText.toString().trim());
-    }
-
-    private List<File> splitAudio(File inputFile, int chunkDurationInSeconds) throws Exception {
-
-        List<File> chunks = new ArrayList<>();
-        String inputFilePath = inputFile.getAbsolutePath();
-        String outputFilePattern = inputFilePath.replace(".m4a", "_chunk_%03d.m4a");
-
-        // ffmpeg을 실행하여 오디오 파일 분할
-        ProcessBuilder pb =
-                new ProcessBuilder(
-                        "ffmpeg",
-                        "-hide_banner",
-                        "-loglevel",
-                        "error",
-                        "-i",
-                        inputFilePath,
-                        "-f",
-                        "segment",
-                        "-segment_time",
-                        String.valueOf(chunkDurationInSeconds),
-                        "-c",
-                        "copy",
-                        outputFilePattern);
-        pb.redirectErrorStream(true);
-        pb.inheritIO();
-        Process process = pb.start();
-        process.waitFor();
-
-        // 생성된 분할 파일 수집
-        int index = 0;
-        while (true) {
-            File chunk = new File(String.format(outputFilePattern, index));
-            if (!chunk.exists()) break;
-            chunks.add(chunk);
-            index++;
-        }
-
-        return chunks;
     }
 }
