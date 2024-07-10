@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import ssuPlector.domain.Developer;
+import ssuPlector.dto.response.DeveloperDTO.DeveloperSearchDTO;
 
 public interface DeveloperService {
     Long createDeveloper(String email, DeveloperRequestDTO requestDTO);
@@ -25,4 +26,6 @@ public interface DeveloperService {
     Page<Developer> getDeveloperList(DeveloperListRequestDTO requestDTO, int page);
 
     Long createDummyDeveloper(DummyDeveloperRequestDTO requestDTO, MultipartFile image);
+
+    List<DeveloperSearchDTO> searchDeveloper(String developerName);
 }

@@ -73,4 +73,8 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
     BooleanExpression part2Eq(Part part) {
         return part != null ? developer.part2.eq(part) : Expressions.asBoolean(true).isTrue();
     }
+
+    public List<Developer> searchDeveloper(String name) {
+        return queryFactory.selectFrom(developer).where(developer.name.contains(name)).fetch();
+    }
 }

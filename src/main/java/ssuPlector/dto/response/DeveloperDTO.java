@@ -72,4 +72,14 @@ public class DeveloperDTO {
         long totalElement; // 전체 아이템 개수
         List<DeveloperResponseDTO> developerResponseDTOList;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeveloperSearchDTO {
+        Long id;
+        String name;
+        String email;
+    }
 }
