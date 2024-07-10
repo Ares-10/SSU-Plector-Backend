@@ -59,6 +59,7 @@ public class ClovaServiceImpl implements ClovaService {
 
             return responseMono.block();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,6 +68,7 @@ public class ClovaServiceImpl implements ClovaService {
         try {
             return objectMapper.readTree(responseStr).get("text").asText();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
     }

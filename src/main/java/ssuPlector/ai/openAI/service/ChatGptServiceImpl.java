@@ -37,6 +37,7 @@ public class ChatGptServiceImpl implements ChatGptService {
                             apiUrl, getHttpEntity(chatGptRequest), ChatGptResponse.class);
             return response.getChoices().get(0).getMessage().getContent();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
     }
@@ -69,6 +70,7 @@ public class ChatGptServiceImpl implements ChatGptService {
                 restTemplate.postForObject(apiUrl, request, ChatGptResponse.class);
 
         if (response == null) {
+            System.out.println("response is null");
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
