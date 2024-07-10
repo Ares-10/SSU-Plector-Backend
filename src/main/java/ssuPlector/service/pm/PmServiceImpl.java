@@ -86,6 +86,7 @@ public class PmServiceImpl implements PmService {
 
             audioFile.delete();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
