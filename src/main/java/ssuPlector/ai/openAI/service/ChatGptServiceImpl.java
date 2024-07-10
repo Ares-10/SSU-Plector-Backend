@@ -76,4 +76,23 @@ public class ChatGptServiceImpl implements ChatGptService {
 
         return response.getChoices().get(0).getMessage().getContent();
     }
+
+    @Override
+    public String branding(String query) {
+        query =
+                "브랜드나 아이디어, 프로젝트의 주제 설명을 입력할게. 색깔, 슬로건, 특장점 등을 포함한 브랜딩을 작성해줘."
+                        + "서론 문구 등 불필요한 문구는 제외하고 작성해줘\n"
+                        + query;
+
+        ChatGptRequest request = new ChatGptRequest(model, query);
+        ChatGptResponse response =
+                restTemplate.postForObject(apiUrl, request, ChatGptResponse.class);
+
+        if (response == null) {
+            System.out.println("response is null");
+            throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
+        }
+
+        return response.getChoices().get(0).getMessage().getContent();
+    }
 }

@@ -135,8 +135,6 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public List<DeveloperSearchDTO> searchDeveloper(String developerName) {
         List<Developer> developers = developerRepository.searchDeveloper(developerName);
-        return developers.stream()
-                .map(DeveloperConverter::toDeveloperSearchDTO)
-                .toList();
+        return developers.stream().map(DeveloperConverter::toDeveloperSearchDTO).toList();
     }
 }
