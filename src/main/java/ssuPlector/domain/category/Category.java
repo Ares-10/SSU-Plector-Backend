@@ -3,14 +3,15 @@ package ssuPlector.domain.category;
 public enum Category {
     SERVICE,
     SECURITY,
-    PLATFORM,
     GAME,
+    MOBILE_APP,
+    WEB_APPLICATION,
     DATA_ANALYTICS,
     AI,
     IOT,
     CLOUD_COMPUTING,
     BLOCKCHAIN,
-    HEALTHCARE_IT,
+    VRAR,
     ROBOTICS,
-    OTHER;
+    OTHER
 }
