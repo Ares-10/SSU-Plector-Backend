@@ -25,6 +25,7 @@ import ssuPlector.dto.request.DeveloperDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperListRequestDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperRequestDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperUpdateRequestDTO;
+import ssuPlector.dto.response.DeveloperDTO.DeveloperSearchDTO;
 import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 import ssuPlector.redis.service.DeveloperHitsService;
@@ -129,5 +130,13 @@ public class DeveloperServiceImpl implements DeveloperService {
         dummyDeveloper.addImage(developerImage);
 
         return developerRepository.save(dummyDeveloper).getId();
+    }
+
+    @Override
+    public List<DeveloperSearchDTO> searchDeveloper(String developerName) {
+        List<Developer> developers = developerRepository.searchDeveloper(developerName);
+        return developers.stream()
+                .map(DeveloperConverter::toDeveloperSearchDTO)
+                .toList();
     }
 }

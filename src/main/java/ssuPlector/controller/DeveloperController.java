@@ -1,5 +1,7 @@
 package ssuPlector.controller;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import ssuPlector.dto.request.DeveloperDTO.DeveloperRequestDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperUpdateRequestDTO;
 import ssuPlector.dto.response.DeveloperDTO.DeveloperDetailDTO;
 import ssuPlector.dto.response.DeveloperDTO.DeveloperListResponseDTO;
+import ssuPlector.dto.response.DeveloperDTO.DeveloperSearchDTO;
 import ssuPlector.global.response.ApiResponse;
 import ssuPlector.security.handler.annotation.AuthUser;
 import ssuPlector.service.developer.DeveloperService;
@@ -92,5 +95,13 @@ public class DeveloperController {
             @RequestPart(value = "image", required = true) MultipartFile image) {
         Long developerId = developerService.createDummyDeveloper(requestDTO, image);
         return ApiResponse.onSuccess("더미 개발자 생성 완료.", developerId);
+    }
+
+    @Operation(summary = "개발자 검색", description = "개발자 이름을 입력받아 정보를 제공합니다._숙희")
+    @GetMapping(value = "/search")
+    public ApiResponse<List<DeveloperSearchDTO>> searchDeveloper(
+            @RequestParam(value = "developerName") String developerName) {
+        List<DeveloperSearchDTO> developerList = developerService.searchDeveloper(developerName);
+        return ApiResponse.onSuccess("개발자 검색 완료.", developerList);
     }
 }

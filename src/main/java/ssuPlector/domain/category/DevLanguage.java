@@ -1,20 +1,19 @@
 package ssuPlector.domain.category;
 
 public enum DevLanguage {
+    GO,
+    JAVA,
+    KOTLIN,
+    JAVASCRIPT,
+    TS,
+    PYTHON,
     C,
     CPP,
     CS,
-    GO,
-    JAVA,
-    JS,
-    TS,
-    KOTLIN,
     PHP,
-    PYTHON,
     R,
     RUBY,
     RUST,
     SQL,
-    HTML,
-    CSS;
+    SWIFT
 }

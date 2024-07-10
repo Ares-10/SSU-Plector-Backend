@@ -17,6 +17,7 @@ import ssuPlector.dto.request.DeveloperDTO.DummyDeveloperRequestDTO;
 import ssuPlector.dto.response.DeveloperDTO;
 import ssuPlector.dto.response.DeveloperDTO.DeveloperDetailDTO;
 import ssuPlector.dto.response.DeveloperDTO.DeveloperPreviewDTO;
+import ssuPlector.dto.response.DeveloperDTO.DeveloperSearchDTO;
 import ssuPlector.service.BaseMethod;
 
 @Component
@@ -118,6 +119,14 @@ public class DeveloperConverter {
                 .languageList(newLanguage)
                 .devToolList(newDevTool)
                 .techStackList(newTechStack)
+                .build();
+    }
+
+    public static DeveloperSearchDTO toDeveloperSearchDTO(Developer developer) {
+        return DeveloperSearchDTO.builder()
+                .id(developer.getId())
+                .name(developer.getName())
+                .email(developer.getEmail())
                 .build();
     }
 }
