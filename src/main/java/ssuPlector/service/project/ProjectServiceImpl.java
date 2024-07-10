@@ -26,6 +26,7 @@ import ssuPlector.domain.Uuid;
 import ssuPlector.domain.category.Category;
 import ssuPlector.domain.category.DevLanguage;
 import ssuPlector.domain.category.DevTools;
+import ssuPlector.domain.category.Part;
 import ssuPlector.domain.category.TechStack;
 import ssuPlector.dto.request.ProjectDTO.ProjectListRequestDto;
 import ssuPlector.dto.response.ProjectDTO.ProjectListResponseDto;
@@ -119,28 +120,29 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Transactional
-    public List<ProjectDeveloper> createProjectDeveloperList(
-            List<ProjectDeveloperRequestDTO> requestDTOList) {
-        return requestDTOList.stream()
+    public List<ProjectDeveloper> createProjectDeveloperList(List<Long> developerIdList) {
+        return developerIdList.stream()
                 .map(this::createProjectDeveloper)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public ProjectDeveloper createProjectDeveloper(ProjectDeveloperRequestDTO requestDTO) {
-
-        Developer developer = developerRepository.findByEmail(requestDTO.getEmail()).orElse(null);
+    public ProjectDeveloper createProjectDeveloper(Long developerId) {
+        Developer developer =
+                developerRepository
+                        .findById(developerId)
+                        .orElseThrow(
+                                () -> new GlobalException(GlobalErrorCode.DEVELOPER_NOT_FOUND));
 
         ProjectDeveloper newProjectDeveloper =
                 ProjectDeveloper.builder()
-                        .name(requestDTO.getName())
-                        .partList(requestDTO.getPartList())
-                        .isTeamLeader(requestDTO.getIsTeamLeader())
+                        .name(developer.getName())
+                        .partList(List.of(new Part[] {developer.getPart1(), developer.getPart2()}))
+                        .isTeamLeader(false)
                         .build();
 
-        if (developer != null) { // 계정이 있는 프로젝트 부원인 경우
-            developer.addProjectDeveloper(newProjectDeveloper);
-        }
+        // 계정이 있는 프로젝트 부원인 경우
+        developer.addProjectDeveloper(newProjectDeveloper);
         return newProjectDeveloper;
     }
 }
