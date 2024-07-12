@@ -37,7 +37,6 @@ public class ChatGptServiceImpl implements ChatGptService {
         try {
             response = restTemplate.postForObject(apiUrl, request, ChatGptCommentResponse.class);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
         return response.getChoices().get(0).getMessage().getContent();
