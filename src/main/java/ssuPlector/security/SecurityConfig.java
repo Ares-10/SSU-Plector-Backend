@@ -71,7 +71,8 @@ public class SecurityConfig {
                                         "/api/developers/search",
                                         "/api/assistant/pm/summary",
                                         "/api/assistant/pm/meeting",
-                                        "/api/assistant/designer/branding")
+                                        "/api/assistant/designer/branding",
+                                        "/api/assistant/designer/makeImage")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());

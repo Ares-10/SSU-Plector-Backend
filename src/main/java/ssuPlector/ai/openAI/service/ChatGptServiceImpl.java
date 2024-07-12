@@ -7,8 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import ssuPlector.ai.openAI.dto.ChatGptRequest;
-import ssuPlector.ai.openAI.dto.ChatGptResponse;
+import ssuPlector.ai.openAI.dto.ChatGptRequest.*;
+import ssuPlector.ai.openAI.dto.ChatGptResponse.*;
 import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 
@@ -23,18 +23,23 @@ public class ChatGptServiceImpl implements ChatGptService {
     @Value("${openai.api.url}")
     private String apiUrl;
 
+    @Value("https://api.openai.com/v1/images/generations")
+    private String imageUrl;
+
     @Autowired private RestTemplate restTemplate;
 
     @Override
     public String recommendMeetingToDo(String query) {
         RestTemplate restTemplate = new RestTemplate();
 
-        ChatGptRequest chatGptRequest = new ChatGptRequest(model, query);
+        ChatGptCommentRequest chatGptCommentRequest = new ChatGptCommentRequest(model, query);
 
         try {
-            ChatGptResponse response =
+            ChatGptCommentResponse response =
                     restTemplate.postForObject(
-                            apiUrl, getHttpEntity(chatGptRequest), ChatGptResponse.class);
+                            apiUrl,
+                            getHttpEntity(chatGptCommentRequest),
+                            ChatGptCommentResponse.class);
             return response.getChoices().get(0).getMessage().getContent();
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,7 +47,7 @@ public class ChatGptServiceImpl implements ChatGptService {
         }
     }
 
-    private HttpEntity<ChatGptRequest> getHttpEntity(ChatGptRequest chatRequest) {
+    private HttpEntity<ChatGptCommentRequest> getHttpEntity(ChatGptCommentRequest chatRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         headers.set("Authorization", "Bearer " + apiKey);
@@ -65,9 +70,9 @@ public class ChatGptServiceImpl implements ChatGptService {
                         + "9. 다음 단계: [향후 계획 및 액션 아이템]\n\n"
                         + text;
 
-        ChatGptRequest request = new ChatGptRequest(model, text);
-        ChatGptResponse response =
-                restTemplate.postForObject(apiUrl, request, ChatGptResponse.class);
+        ChatGptCommentRequest request = new ChatGptCommentRequest(model, text);
+        ChatGptCommentResponse response =
+                restTemplate.postForObject(apiUrl, request, ChatGptCommentResponse.class);
 
         if (response == null) {
             System.out.println("response is null");
@@ -78,15 +83,15 @@ public class ChatGptServiceImpl implements ChatGptService {
     }
 
     @Override
-    public String branding(String query) {
-        query =
-                "브랜드나 아이디어, 프로젝트의 주제 설명을 입력할게. 색깔, 슬로건, 특장점 등을 포함한 브랜딩을 작성해줘."
-                        + "서론 문구 등 불필요한 문구는 제외하고 작성해줘\n"
-                        + query;
+    public String standardChat(String query) {
+        return standardChat(query, model);
+    }
 
-        ChatGptRequest request = new ChatGptRequest(model, query);
-        ChatGptResponse response =
-                restTemplate.postForObject(apiUrl, request, ChatGptResponse.class);
+    @Override
+    public String standardChat(String query, String model) {
+        ChatGptCommentRequest request = new ChatGptCommentRequest(model, query);
+        ChatGptCommentResponse response =
+                restTemplate.postForObject(apiUrl, request, ChatGptCommentResponse.class);
 
         if (response == null) {
             System.out.println("response is null");
@@ -94,5 +99,19 @@ public class ChatGptServiceImpl implements ChatGptService {
         }
 
         return response.getChoices().get(0).getMessage().getContent();
+    }
+
+    @Override
+    public String makeImage(String query) {
+        ChatGptImageRequest request = new ChatGptImageRequest(query, 1, "256x256");
+        ChatGptImageResponse response =
+                restTemplate.postForObject(imageUrl, request, ChatGptImageResponse.class);
+
+        if (response == null) {
+            System.out.println("response is null");
+            throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
+        }
+
+        return response.getData().get(0).getUrl();
     }
 }

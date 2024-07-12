@@ -6,5 +6,9 @@ public interface ChatGptService {
 
     String recommendMeetingToDo(String query);
 
-    String branding(String query);
+    String standardChat(String query);
+
+    String standardChat(String query, String model);
+
+    String makeImage(String query);
 }

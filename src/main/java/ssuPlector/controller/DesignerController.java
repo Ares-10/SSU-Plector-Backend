@@ -20,4 +20,10 @@ public class DesignerController {
     public ApiResponse<String> branding(@RequestParam(value = "projectInfo") String projectInfo) {
         return ApiResponse.onSuccess("브랜딩 생성 완료", designerService.branding(projectInfo));
     }
+
+    @Operation(summary = "이미지 생성", description = "입력받은 문자열을 기반으로 프로젝트의 이미지를 생성합니다._현근")
+    @GetMapping("/makeImage")
+    public ApiResponse<String> makeImage(@RequestParam(value = "imageInfo") String imageInfo) {
+        return ApiResponse.onSuccess("이미지 생성 완료", designerService.makeImage(imageInfo));
+    }
 }
