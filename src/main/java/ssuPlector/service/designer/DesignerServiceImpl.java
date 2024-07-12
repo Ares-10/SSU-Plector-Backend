@@ -31,7 +31,6 @@ public class DesignerServiceImpl implements DesignerService {
                         + ">. "
                         + "Only give me the prompt.";
         String imageGenerateQuery = chatGptService.standardChat(imageInfo, "gpt-4o");
-        System.out.println(imageGenerateQuery);
         return chatGptService.makeImage(imageGenerateQuery);
     }
 }
