@@ -64,7 +64,7 @@ public class PmServiceImpl implements PmService {
                         + "에 대해서 시간 분배를 해줘. 다른것 추가하지 말고 아래의 형식대로만 보내줘\n"
                         + todoFormat;
 
-        String result = chatGptService.recommendMeetingToDo(query);
+        String result = chatGptService.standardChat(query);
 
         List<Long> timeList = new ArrayList<>();
         String[] split = result.split("\n");
@@ -107,7 +107,20 @@ public class PmServiceImpl implements PmService {
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
-        return chatGptService.summarizeText(totalText.toString().trim());
+        String text =
+                "다음 텍스트를 프로젝트 회의록 형식에 맞게 요약해서 정리한 결과물을 반환해주세요. "
+                        + "프로젝트 회의록 형식은 다음과 같아야 합니다:\n"
+                        + "1. 회의 제목: [제목]\n"
+                        + "2. 회의 날짜: [날짜]\n"
+                        + "3. 참석자: [참석자 목록]\n"
+                        + "4. 회의 목적: [목적]\n"
+                        + "5. 진행 상황 공유: [진행 상황]\n"
+                        + "6. 이슈 및 리스크: [이슈 및 리스크]\n"
+                        + "7. 주요 논의 사항: [논의된 주요 사항들]\n"
+                        + "8. 결론: [결론]\n"
+                        + "9. 다음 단계: [향후 계획 및 액션 아이템]\n\n"
+                        + totalText.toString().trim();
+        return chatGptService.standardChat(text);
     }
 
     private List<File> splitAudio(File inputFile, int chunkDurationInSeconds) throws Exception {
