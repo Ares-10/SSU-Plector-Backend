@@ -7,8 +7,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import ssuPlector.ai.openAI.dto.ChatGptRequest.*;
-import ssuPlector.ai.openAI.dto.ChatGptResponse.*;
+import ssuPlector.ai.openAI.dto.ChatGptRequest.ChatGptCommentRequest;
+import ssuPlector.ai.openAI.dto.ChatGptRequest.ChatGptImageRequest;
+import ssuPlector.ai.openAI.dto.ChatGptResponse.ChatGptCommentResponse;
+import ssuPlector.ai.openAI.dto.ChatGptResponse.ChatGptImageResponse;
 import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 
@@ -23,7 +25,7 @@ public class ChatGptServiceImpl implements ChatGptService {
     @Value("${openai.api.url}")
     private String apiUrl;
 
-    @Value("https://api.openai.com/v1/images/generations")
+    @Value("${openai.api.image-url}")
     private String imageUrl;
 
     @Autowired private RestTemplate restTemplate;
@@ -69,17 +71,7 @@ public class ChatGptServiceImpl implements ChatGptService {
                         + "8. 결론: [결론]\n"
                         + "9. 다음 단계: [향후 계획 및 액션 아이템]\n\n"
                         + text;
-
-        ChatGptCommentRequest request = new ChatGptCommentRequest(model, text);
-        ChatGptCommentResponse response =
-                restTemplate.postForObject(apiUrl, request, ChatGptCommentResponse.class);
-
-        if (response == null) {
-            System.out.println("response is null");
-            throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
-        }
-
-        return response.getChoices().get(0).getMessage().getContent();
+        return standardChat(text);
     }
 
     @Override
@@ -90,28 +82,26 @@ public class ChatGptServiceImpl implements ChatGptService {
     @Override
     public String standardChat(String query, String model) {
         ChatGptCommentRequest request = new ChatGptCommentRequest(model, query);
-        ChatGptCommentResponse response =
-                restTemplate.postForObject(apiUrl, request, ChatGptCommentResponse.class);
-
-        if (response == null) {
-            System.out.println("response is null");
+        ChatGptCommentResponse response = null;
+        try {
+            response = restTemplate.postForObject(apiUrl, request, ChatGptCommentResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
-
         return response.getChoices().get(0).getMessage().getContent();
     }
 
     @Override
     public String makeImage(String query) {
         ChatGptImageRequest request = new ChatGptImageRequest(query, 1, "256x256");
-        ChatGptImageResponse response =
-                restTemplate.postForObject(imageUrl, request, ChatGptImageResponse.class);
-
-        if (response == null) {
-            System.out.println("response is null");
+        ChatGptImageResponse response = null;
+        try {
+            response = restTemplate.postForObject(imageUrl, request, ChatGptImageResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
-
         return response.getData().get(0).getUrl();
     }
 }
