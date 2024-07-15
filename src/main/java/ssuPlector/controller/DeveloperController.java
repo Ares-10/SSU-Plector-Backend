@@ -104,4 +104,13 @@ public class DeveloperController {
         List<DeveloperSearchDTO> developerList = developerService.searchDeveloper(developerName);
         return ApiResponse.onSuccess("개발자 검색 완료.", developerList);
     }
+
+    @Operation(summary = "더미 개발자 프로필 수정", description = "더미 개발자 프로필을 수정합니다._숙희")
+    @PatchMapping("/dummy/update")
+    public ApiResponse<Long> updateDummyDeveloper(
+            @RequestParam(value = "developerId") Long developer,
+            @RequestBody DeveloperUpdateRequestDTO requestDTO) {
+        Long developerId = developerService.updateDeveloper(developer, requestDTO);
+        return ApiResponse.onSuccess("더미 개발자 프로필 수정 완료.", developerId);
+    }
 }
