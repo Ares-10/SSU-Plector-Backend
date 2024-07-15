@@ -92,6 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public Long updateProject(Long projectId, ProjectUpdateRequestDTO requestDTO) {
         Project project =
                 projectRepository

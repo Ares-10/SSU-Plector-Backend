@@ -60,6 +60,6 @@ public class ProjectController {
             @RequestParam(value = "projectId") Long project,
             @RequestBody ProjectUpdateRequestDTO requestDTO) {
         Long projectId = projectService.updateProject(project, requestDTO);
-        return ApiResponse.onSuccess("프로젝트 생성 및 저장 완료.", projectId);
+        return ApiResponse.onSuccess("프로젝트 수정 완료.", projectId);
     }
 }
