@@ -92,6 +92,21 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Long updateProject(Long projectId, ProjectUpdateRequestDTO requestDTO) {
+        Project project =
+                projectRepository
+                        .findById(projectId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.PROJECT_NOT_FOUND));
+
+        ArrayList<DevLanguage> newLanguage = baseMethod.fillList(requestDTO.getLanguageList());
+        ArrayList<DevTools> newDevTool = baseMethod.fillList(requestDTO.getDevToolList());
+        ArrayList<TechStack> newTechStack = baseMethod.fillList(requestDTO.getTechStackList());
+        project.updateProject(newLanguage, newDevTool, newTechStack);
+
+        return project.getId();
+    }
+
+    @Override
     @Transactional
     public Long createProject(ProjectRequestDTO requestDTO, MultipartFile image) {
 
