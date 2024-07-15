@@ -72,4 +72,13 @@ public class Project extends BaseEntity {
         if (this.imageList == null) this.imageList = new ArrayList<>();
         this.imageList.add(image);
     }
+
+    public void updateProject(
+            ArrayList<DevLanguage> newLanguage,
+            ArrayList<DevTools> newDevTool,
+            ArrayList<TechStack> newTechStack) {
+        this.languageList = newLanguage;
+        this.devToolList = newDevTool;
+        this.techStackList = newTechStack;
+    }
 }
