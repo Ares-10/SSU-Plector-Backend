@@ -111,7 +111,7 @@ public class DeveloperController {
             description = "유저의 입력 값(개발자 파트, 기술스택, 설명 등)을 바탕으로 제일 높은 가중치의 개발자 3명 반환합니다._숙희")
     @GetMapping(value = "/match")
     public ApiResponse<List<DeveloperSearchDTO>> matchDeveloper(
-            @ModelAttribute DeveloperMatchingDTO developerMatchingDTO,
+            @Valid @ModelAttribute DeveloperMatchingDTO developerMatchingDTO,
             @RequestParam(value = "developerInfo") String developerInfo) {
         List<DeveloperSearchDTO> developerList =
                 developerService.matchDeveloper(developerInfo, developerMatchingDTO);
