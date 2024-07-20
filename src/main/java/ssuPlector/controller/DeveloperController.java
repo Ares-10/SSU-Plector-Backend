@@ -23,6 +23,7 @@ import ssuPlector.converter.DeveloperConverter;
 import ssuPlector.domain.Developer;
 import ssuPlector.dto.request.DeveloperDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperListRequestDTO;
+import ssuPlector.dto.request.DeveloperDTO.DeveloperMatchingDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperRequestDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperUpdateRequestDTO;
 import ssuPlector.dto.response.DeveloperDTO.DeveloperDetailDTO;
@@ -103,5 +104,17 @@ public class DeveloperController {
             @RequestParam(value = "developerName") String developerName) {
         List<DeveloperSearchDTO> developerList = developerService.searchDeveloper(developerName);
         return ApiResponse.onSuccess("개발자 검색 완료.", developerList);
+    }
+
+    @Operation(
+            summary = "개발자 매칭 봇",
+            description = "유저의 입력 값(개발자 파트, 기술스택, 설명 등)을 바탕으로 제일 높은 가중치의 개발자 3명 반환합니다._숙희")
+    @GetMapping(value = "/match")
+    public ApiResponse<List<DeveloperSearchDTO>> matchDeveloper(
+            @ModelAttribute DeveloperMatchingDTO developerMatchingDTO,
+            @RequestParam(value = "developerInfo") String developerInfo) {
+        List<DeveloperSearchDTO> developerList =
+                developerService.matchDeveloper(developerInfo, developerMatchingDTO);
+        return ApiResponse.onSuccess("개발자 매칭 완료.", developerList);
     }
 }

@@ -69,6 +69,7 @@ public class SecurityConfig {
                                         "/api/projects",
                                         "/api/developers/dummy",
                                         "/api/developers/search",
+                                        "/api/developers/match",
                                         "/api/assistant/pm/summary",
                                         "/api/assistant/pm/meeting")
                                 .permitAll()
