@@ -191,7 +191,7 @@ public class DeveloperServiceImpl implements DeveloperService {
 
         Map<Long, Double> weight = developerRepository.matchDeveloper(developerInfo, requestDTO);
 
-        double w = 0.0;
+        double w = 1.0;
         for (Long developerId : developerIds) {
             Developer developer =
                     developerRepository
