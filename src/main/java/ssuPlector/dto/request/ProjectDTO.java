@@ -82,4 +82,13 @@ public class ProjectDTO {
             return isTeamLeader;
         }
     }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ProjectUpdateRequestDTO {
+        @MaxSizeThree private List<DevLanguage> languageList;
+        @MaxSizeThree private List<DevTools> devToolList;
+        @MaxSizeThree private List<TechStack> techStackList;
+    }
 }

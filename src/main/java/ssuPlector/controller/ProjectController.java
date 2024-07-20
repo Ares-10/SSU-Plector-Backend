@@ -53,4 +53,13 @@ public class ProjectController {
         Long projectId = projectService.createProject(requestDTO, image);
         return ApiResponse.onSuccess("프로젝트 생성 및 저장 완료.", projectId);
     }
+
+    @Operation(summary = "프로젝트 수정 API", description = "프로젝트를 수정합니다._숙희")
+    @PatchMapping("/modify")
+    public ApiResponse<Long> createProject(
+            @RequestParam(value = "projectId") Long project,
+            @RequestBody ProjectUpdateRequestDTO requestDTO) {
+        Long projectId = projectService.updateProject(project, requestDTO);
+        return ApiResponse.onSuccess("프로젝트 수정 완료.", projectId);
+    }
 }

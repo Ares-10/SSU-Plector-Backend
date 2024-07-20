@@ -1,8 +1,9 @@
 package ssuPlector.ai.openAI.service;
 
 public interface ChatGptService {
+    String standardChat(String query);
 
-    String summarizeText(String text);
+    String standardChat(String query, String model);
 
-    String recommendMeetingToDo(String query);
+    String makeImage(String query);
 }

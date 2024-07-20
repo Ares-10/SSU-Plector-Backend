@@ -67,11 +67,15 @@ public class SecurityConfig {
                                         "/api/projects/{projectId}",
                                         "/api/projects/list",
                                         "/api/projects",
+                                        "/api/projects/modify",
                                         "/api/developers/dummy",
+                                        "/api/developers/dummy/update",
                                         "/api/developers/search",
                                         "/api/developers/match",
                                         "/api/assistant/pm/summary",
-                                        "/api/assistant/pm/meeting")
+                                        "/api/assistant/pm/meeting",
+                                        "/api/assistant/designer/branding",
+                                        "/api/assistant/designer/makeImage")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());
