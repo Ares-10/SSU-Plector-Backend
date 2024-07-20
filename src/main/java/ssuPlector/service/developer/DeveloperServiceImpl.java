@@ -191,7 +191,7 @@ public class DeveloperServiceImpl implements DeveloperService {
 
         Map<Long, Double> weight = developerRepository.matchDeveloper(developerInfo, requestDTO);
 
-        double w = 1.0;
+        double w = 0.5;
         for (Long developerId : developerIds) {
             Developer developer =
                     developerRepository
@@ -200,7 +200,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                                     () -> new GlobalException(GlobalErrorCode.DEVELOPER_NOT_FOUND));
 
             weight.put(developer.getId(), weight.get(developer.getId()) + w);
-            w -= 0.3;
+            w -= 0.1;
         }
 
         // sort
