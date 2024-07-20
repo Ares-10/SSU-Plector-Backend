@@ -1,9 +1,12 @@
 package ssuPlector.repository.developer;
 
 import static ssuPlector.domain.QDeveloper.developer;
+import static ssuPlector.domain.QProjectDeveloper.projectDeveloper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,7 +21,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 import ssuPlector.domain.Developer;
+import ssuPlector.domain.category.DevLanguage;
 import ssuPlector.domain.category.Part;
+import ssuPlector.domain.category.TechStack;
+import ssuPlector.dto.request.DeveloperDTO.DeveloperMatchingDTO;
 import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 
@@ -76,5 +82,63 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
 
     public List<Developer> searchDeveloper(String name) {
         return queryFactory.selectFrom(developer).where(developer.name.contains(name)).fetch();
+    }
+
+    BooleanExpression searchDeveloperStudentNumber(String min, String max) {
+        if (min == null) min = "0";
+        if (max == null) max = "100";
+        return developer.studentNumber.between(min, max);
+    }
+
+    BooleanExpression searchDeveloperProjectExperience(Boolean experience) {
+        if (experience == null || !experience) {
+            return developer.isNotNull();
+        }
+        return queryFactory
+                .selectFrom(projectDeveloper)
+                .where(projectDeveloper.developer.eq(developer))
+                .exists();
+    }
+
+    @Override
+    public Map<Long, Double> matchDeveloper(String developerInfo, DeveloperMatchingDTO requestDTO) {
+        // part, 개발 경험, 학번
+        List<Developer> developers =
+                queryFactory
+                        .selectFrom(developer)
+                        .where(
+                                part1Eq(requestDTO.getPart())
+                                        .and(
+                                                searchDeveloperStudentNumber(
+                                                        requestDTO.getStudentNumberMin(),
+                                                        requestDTO.getStudentNumberMax()))
+                                        .and(
+                                                searchDeveloperProjectExperience(
+                                                        requestDTO.getProjectExperience())))
+                        .fetch();
+
+        Map<Long, Double> weight = new HashMap<>();
+
+        // 사용언어, 기술스택
+        for (Developer developer : developers) {
+            double tmpWeight = 0.0;
+
+            List<DevLanguage> devLanguageList = developer.getLanguageList();
+            List<DevLanguage> intersectionLang =
+                    devLanguageList.stream()
+                            .filter(requestDTO.getLanguageList()::contains)
+                            .toList();
+
+            tmpWeight += intersectionLang.size() * 0.5;
+
+            List<TechStack> techStackList = developer.getTechStackList();
+            List<TechStack> intersectionTech =
+                    techStackList.stream().filter(requestDTO.getTechStackList()::contains).toList();
+
+            tmpWeight += intersectionTech.size() * 0.3;
+
+            weight.put(developer.getId(), tmpWeight);
+        }
+        return weight;
     }
 }
