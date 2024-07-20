@@ -20,7 +20,7 @@ public class ChatGptServiceImpl implements ChatGptService {
     @Value("${openai.api.url}")
     private String apiUrl;
 
-    @Value("${openai.api.url}")
+    @Value("${openai.api.image-url}")
     private String imageUrl;
 
     @Autowired private RestTemplate restTemplate;
