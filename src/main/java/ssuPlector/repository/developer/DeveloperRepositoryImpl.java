@@ -107,7 +107,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
                 queryFactory
                         .selectFrom(developer)
                         .where(
-                                part1Eq(requestDTO.getPart())
+                                (part1Eq(requestDTO.getPart()).or(part2Eq(requestDTO.getPart())))
                                         .and(
                                                 searchDeveloperStudentNumber(
                                                         requestDTO.getStudentNumberMin(),
