@@ -58,7 +58,7 @@ public class DeveloperServiceImpl implements DeveloperService {
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
 
-    @Value("${sp.ai.url}")
+    @Value("${ai.url}")
     private String aiUrl;
 
     @Override
