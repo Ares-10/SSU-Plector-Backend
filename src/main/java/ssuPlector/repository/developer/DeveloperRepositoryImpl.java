@@ -116,6 +116,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
                                                 searchDeveloperProjectExperience(
                                                         requestDTO.getProjectExperience())))
                         .fetch();
+        if (developers.size() == 0) throw new GlobalException(GlobalErrorCode.DEVELOPER_NOT_FOUND);
 
         Map<Long, Double> weight = new HashMap<>();
 
@@ -139,6 +140,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
 
             weight.put(developer.getId(), tmpWeight);
         }
+        System.out.println(weight);
         return weight;
     }
 }
