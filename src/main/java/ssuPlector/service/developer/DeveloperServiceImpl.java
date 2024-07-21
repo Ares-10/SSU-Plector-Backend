@@ -199,6 +199,8 @@ public class DeveloperServiceImpl implements DeveloperService {
                             .orElseThrow(
                                     () -> new GlobalException(GlobalErrorCode.DEVELOPER_NOT_FOUND));
 
+            weight.putIfAbsent(developer.getId(), 0.0);
+
             weight.put(developer.getId(), weight.get(developer.getId()) + w);
             w -= 0.1;
         }
