@@ -69,6 +69,9 @@ openai:
   api:
     key: ${OPENAI_API_KEY}
     url: "https://api.openai.com/v1/chat/completions"
+    image-url: "https://api.openai.com/v1/images/generations"
+ai:
+  url: ${SP_AI_URL}
 ---
 # DEV
 spring:
@@ -129,4 +132,5 @@ openai:
     key: ${OPENAI_API_KEY}
     url: "https://api.openai.com/v1/chat/completions"
     image-url: "https://api.openai.com/v1/images/generations"
-
+ai:
+  url: ${SP_DEV_AI_URL}

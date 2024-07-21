@@ -71,6 +71,7 @@ public class SecurityConfig {
                                         "/api/developers/dummy",
                                         "/api/developers/dummy/update",
                                         "/api/developers/search",
+                                        "/api/developers/match",
                                         "/api/assistant/pm/summary",
                                         "/api/assistant/pm/meeting",
                                         "/api/assistant/designer/branding",

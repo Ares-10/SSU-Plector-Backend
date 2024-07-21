@@ -28,4 +28,6 @@ public interface DeveloperService {
     Long createDummyDeveloper(DummyDeveloperRequestDTO requestDTO, MultipartFile image);
 
     List<DeveloperSearchDTO> searchDeveloper(String developerName);
+
+    List<DeveloperSearchDTO> matchDeveloper(String developerInfo, DeveloperMatchingDTO requestDTO);
 }

@@ -3,6 +3,7 @@ package ssuPlector.dto.request;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -127,5 +128,22 @@ public class DeveloperDTO {
         @MaxSizeThree private List<DevLanguage> languageList;
         @MaxSizeThree private List<DevTools> devToolList;
         @MaxSizeThree private List<TechStack> techStackList;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DeveloperMatchingDTO {
+        @NotNull(message = "필수 입력값")
+        private Part part;
+
+        @NotNull(message = "필수 입력값")
+        private List<@NotNull DevLanguage> languageList;
+
+        private List<TechStack> techStackList;
+        private Boolean projectExperience;
+        private Long studentNumberMin;
+        private Long studentNumberMax;
     }
 }

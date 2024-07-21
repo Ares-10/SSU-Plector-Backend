@@ -1,15 +1,30 @@
 package ssuPlector.service.developer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import ssuPlector.aws.s3.AmazonS3Manager;
@@ -23,6 +38,7 @@ import ssuPlector.domain.category.DevTools;
 import ssuPlector.domain.category.TechStack;
 import ssuPlector.dto.request.DeveloperDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperListRequestDTO;
+import ssuPlector.dto.request.DeveloperDTO.DeveloperMatchingDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperRequestDTO;
 import ssuPlector.dto.request.DeveloperDTO.DeveloperUpdateRequestDTO;
 import ssuPlector.dto.response.DeveloperDTO.DeveloperSearchDTO;
@@ -41,6 +57,9 @@ public class DeveloperServiceImpl implements DeveloperService {
     private final BaseMethod baseMethod;
     private final AmazonS3Manager s3Manager;
     private final UuidRepository uuidRepository;
+
+    @Value("${sp.ai.url}")
+    private String aiUrl;
 
     @Override
     @Transactional
@@ -136,5 +155,76 @@ public class DeveloperServiceImpl implements DeveloperService {
     public List<DeveloperSearchDTO> searchDeveloper(String developerName) {
         List<Developer> developers = developerRepository.searchDeveloper(developerName);
         return developers.stream().map(DeveloperConverter::toDeveloperSearchDTO).toList();
+    }
+
+    @Override
+    public List<DeveloperSearchDTO> matchDeveloper(
+            String developerInfo, DeveloperMatchingDTO requestDTO) {
+        // request
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String requestBody =
+                String.format(
+                        "{\"part\":\"%s\", \"request\":\"%s\"}",
+                        requestDTO.getPart(), developerInfo);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(aiUrl, HttpMethod.POST, requestEntity, String.class);
+
+        // response
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Long> developerIds = new ArrayList<>();
+        try {
+            JsonNode developersNode = objectMapper.readTree(response.getBody()).path("developers");
+            Iterator<JsonNode> elements = developersNode.elements();
+            while (elements.hasNext()) {
+                Long developerId = elements.next().path("developer_id").asLong();
+                developerIds.add(developerId);
+            }
+        } catch (JsonProcessingException e) {
+            throw new GlobalException(GlobalErrorCode.INVALID_REQUEST_INFO);
+        }
+
+        Map<Long, Double> weight = developerRepository.matchDeveloper(developerInfo, requestDTO);
+
+        double w = 0.5;
+        for (Long developerId : developerIds) {
+            Developer developer =
+                    developerRepository
+                            .findById(developerId)
+                            .orElseThrow(
+                                    () -> new GlobalException(GlobalErrorCode.DEVELOPER_NOT_FOUND));
+
+            weight.putIfAbsent(developer.getId(), 0.0);
+
+            weight.put(developer.getId(), weight.get(developer.getId()) + w);
+            w -= 0.1;
+        }
+
+        // sort
+        List<Pair<Long, Double>> sortedDeveloper =
+                weight.entrySet().stream()
+                        .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
+                        .sorted((p1, p2) -> p2.getValue().compareTo(p1.getValue()))
+                        .toList();
+
+        List<Developer> developerList =
+                sortedDeveloper.stream()
+                        .limit(3)
+                        .map(
+                                m -> {
+                                    Optional<Developer> optionalDeveloper =
+                                            developerRepository.findById(m.getLeft());
+                                    return optionalDeveloper.orElseThrow(
+                                            () ->
+                                                    new GlobalException(
+                                                            GlobalErrorCode.DEVELOPER_NOT_FOUND));
+                                })
+                        .toList();
+        return developerList.stream().map(DeveloperConverter::toDeveloperSearchDTO).toList();
     }
 }
