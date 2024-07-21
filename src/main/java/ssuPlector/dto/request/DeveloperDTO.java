@@ -143,7 +143,7 @@ public class DeveloperDTO {
 
         private List<TechStack> techStackList;
         private Boolean projectExperience;
-        private String studentNumberMin;
-        private String studentNumberMax;
+        private Long studentNumberMin;
+        private Long studentNumberMax;
     }
 }

@@ -84,10 +84,10 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
         return queryFactory.selectFrom(developer).where(developer.name.contains(name)).fetch();
     }
 
-    BooleanExpression searchDeveloperStudentNumber(String min, String max) {
-        if (min == null) min = "0";
-        if (max == null) max = "100";
-        return developer.studentNumber.between(min, max);
+    BooleanExpression searchDeveloperStudentNumber(Long min, Long max) {
+        if (min == null) min = 0L;
+        if (max == null) max = 100L;
+        return developer.studentNumber.between(min.toString(), max.toString());
     }
 
     BooleanExpression searchDeveloperProjectExperience(Boolean experience) {
