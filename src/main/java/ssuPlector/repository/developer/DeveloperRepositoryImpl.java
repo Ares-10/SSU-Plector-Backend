@@ -85,7 +85,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
     }
 
     BooleanExpression searchDeveloperStudentNumber(Long min, Long max) {
-        if (max!=null && max >= 100) throw new GlobalException(GlobalErrorCode.OVER_MAX_SIZE);
+        if (max != null && max >= 100) throw new GlobalException(GlobalErrorCode.OVER_MAX_SIZE);
 
         min = (min == null) ? 0L : min;
         max = (max == null) ? 99L : max;
