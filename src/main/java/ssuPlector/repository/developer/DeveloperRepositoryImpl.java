@@ -85,14 +85,20 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
     }
 
     BooleanExpression searchDeveloperStudentNumber(Long min, Long max) {
-        if (min == null) min = 0L;
-        if (max == null) max = 100L;
-        return developer.studentNumber.between(min.toString(), max.toString());
+        if (max!=null && max >= 100) throw new GlobalException(GlobalErrorCode.OVER_MAX_SIZE);
+
+        min = (min == null) ? 0L : min;
+        max = (max == null) ? 99L : max;
+
+        String minStr = String.format("%02d", min);
+        String maxStr = String.format("%02d", max);
+
+        return developer.studentNumber.between(minStr, maxStr);
     }
 
     BooleanExpression searchDeveloperProjectExperience(Boolean experience) {
         if (experience == null || !experience) {
-            return developer.isNotNull();
+            return Expressions.TRUE;
         }
         return queryFactory
                 .selectFrom(projectDeveloper)
