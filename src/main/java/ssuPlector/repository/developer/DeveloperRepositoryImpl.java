@@ -140,7 +140,6 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
 
             weight.put(developer.getId(), tmpWeight);
         }
-        System.out.println(weight);
         return weight;
     }
 }
