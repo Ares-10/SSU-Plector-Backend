@@ -1,6 +1,7 @@
 package ssuPlector.service.developer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -177,22 +178,25 @@ public class DeveloperServiceImpl implements DeveloperService {
 
         // response
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Long> developerIds = new ArrayList<>();
+        Map<Long, Double> developers = new HashMap<>();
+
         try {
             JsonNode developersNode = objectMapper.readTree(response.getBody()).path("developers");
             Iterator<JsonNode> elements = developersNode.elements();
             while (elements.hasNext()) {
-                Long developerId = elements.next().path("developer_id").asLong();
-                developerIds.add(developerId);
+                JsonNode element = elements.next();
+                Long developerId = element.path("developer_id").asLong();
+                Double weight = element.path("similarity").asDouble();
+                developers.put(developerId, weight);
             }
+
         } catch (JsonProcessingException e) {
             throw new GlobalException(GlobalErrorCode.INVALID_REQUEST_INFO);
         }
 
         Map<Long, Double> weight = developerRepository.matchDeveloper(developerInfo, requestDTO);
 
-        double w = 0.5;
-        for (Long developerId : developerIds) {
+        for (Long developerId : developers.keySet()) {
             Developer developer =
                     developerRepository
                             .findById(developerId)
@@ -200,9 +204,8 @@ public class DeveloperServiceImpl implements DeveloperService {
                                     () -> new GlobalException(GlobalErrorCode.DEVELOPER_NOT_FOUND));
 
             weight.putIfAbsent(developer.getId(), 0.0);
-
-            weight.put(developer.getId(), weight.get(developer.getId()) + w);
-            w -= 0.1;
+            weight.put(
+                    developer.getId(), weight.get(developer.getId()) + developers.get(developerId));
         }
 
         // sort
