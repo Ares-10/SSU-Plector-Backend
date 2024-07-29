@@ -29,7 +29,7 @@ public enum GlobalErrorCode {
 
     // size관련
     ESCAPE_MAX_LIST_SIZE(HttpStatus.NOT_FOUND, "LISTSIZE4001", "리스트 사이즈를 벗어났습니다."),
-
+    OVER_MAX_SIZE(HttpStatus.NOT_FOUND, "LISTSIZE4002", "2자리를 입력하세요."),
     // AUTH
     AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4001", "토큰이 만료되었습니다."),
     AUTH_INVALID_TOKEN(HttpStatus.NOT_FOUND, "AUTH4002", "토큰이 유효하지 않습니다."),

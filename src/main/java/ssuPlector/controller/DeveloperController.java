@@ -108,7 +108,9 @@ public class DeveloperController {
 
     @Operation(
             summary = "개발자 매칭 봇",
-            description = "유저의 입력 값(개발자 파트, 기술스택, 설명 등)을 바탕으로 제일 높은 가중치의 개발자 3명 반환합니다._숙희")
+            description =
+                    "유저의 입력 값(개발자 파트, 기술스택, 사용언어, 최소 최대 학번(2자리), 프로젝트 경험 여부, 설명)을"
+                            + "바탕으로 제일 높은 가중치의 개발자 3명 반환합니다._숙희")
     @GetMapping(value = "/match")
     public ApiResponse<List<DeveloperSearchDTO>> matchDeveloper(
             @Valid @ModelAttribute DeveloperMatchingDTO developerMatchingDTO,
