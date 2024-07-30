@@ -161,6 +161,16 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public List<DeveloperSearchDTO> matchDeveloper(
             String developerInfo, DeveloperMatchingDTO requestDTO) {
+
+        // 필수조건 만족 확인
+        List<Developer> essentialDeveloper =
+                developerRepository.essentialMatchDeveloper(requestDTO);
+        if (essentialDeveloper.size() == 0) return new ArrayList<>();
+
+        // 선택조건 만족 확인
+        Map<Long, Double> weight =
+                developerRepository.matchDeveloper(essentialDeveloper, requestDTO);
+
         // request
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -186,16 +196,15 @@ public class DeveloperServiceImpl implements DeveloperService {
             while (elements.hasNext()) {
                 JsonNode element = elements.next();
                 Long developerId = element.path("developer_id").asLong();
-                Double weight = element.path("similarity").asDouble();
-                developers.put(developerId, weight);
+                Double similarity = element.path("similarity").asDouble();
+                developers.put(developerId, similarity);
             }
 
         } catch (JsonProcessingException e) {
             throw new GlobalException(GlobalErrorCode.INVALID_REQUEST_INFO);
         }
 
-        Map<Long, Double> weight = developerRepository.matchDeveloper(developerInfo, requestDTO);
-
+        // AI 서버에서 받은 값과 조건 계산 값 합산
         for (Long developerId : developers.keySet()) {
             Developer developer =
                     developerRepository
@@ -228,6 +237,7 @@ public class DeveloperServiceImpl implements DeveloperService {
                                                             GlobalErrorCode.DEVELOPER_NOT_FOUND));
                                 })
                         .toList();
+
         return developerList.stream().map(DeveloperConverter::toDeveloperSearchDTO).toList();
     }
 }

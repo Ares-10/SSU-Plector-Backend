@@ -16,5 +16,7 @@ public interface DeveloperRepositoryCustom {
 
     List<Developer> searchDeveloper(String developerName);
 
-    Map<Long, Double> matchDeveloper(String developerInfo, DeveloperMatchingDTO requestDTO);
+    Map<Long, Double> matchDeveloper(List<Developer> developers, DeveloperMatchingDTO requestDTO);
+
+    List<Developer> essentialMatchDeveloper(DeveloperMatchingDTO requestDTO);
 }
