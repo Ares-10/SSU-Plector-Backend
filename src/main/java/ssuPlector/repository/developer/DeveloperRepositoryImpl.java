@@ -106,24 +106,25 @@ public class DeveloperRepositoryImpl implements DeveloperRepositoryCustom {
                 .exists();
     }
 
-    @Override
-    public Map<Long, Double> matchDeveloper(String developerInfo, DeveloperMatchingDTO requestDTO) {
+    public List<Developer> essentialMatchDeveloper(DeveloperMatchingDTO requestDTO) {
         // part, 개발 경험, 학번
-        List<Developer> developers =
-                queryFactory
-                        .selectFrom(developer)
-                        .where(
-                                (part1Eq(requestDTO.getPart()).or(part2Eq(requestDTO.getPart())))
-                                        .and(
-                                                searchDeveloperStudentNumber(
-                                                        requestDTO.getStudentNumberMin(),
-                                                        requestDTO.getStudentNumberMax()))
-                                        .and(
-                                                searchDeveloperProjectExperience(
-                                                        requestDTO.getProjectExperience())))
-                        .fetch();
-        if (developers.size() == 0) throw new GlobalException(GlobalErrorCode.DEVELOPER_NOT_FOUND);
+        return queryFactory
+                .selectFrom(developer)
+                .where(
+                        (part1Eq(requestDTO.getPart()).or(part2Eq(requestDTO.getPart())))
+                                .and(
+                                        searchDeveloperStudentNumber(
+                                                requestDTO.getStudentNumberMin(),
+                                                requestDTO.getStudentNumberMax()))
+                                .and(
+                                        searchDeveloperProjectExperience(
+                                                requestDTO.getProjectExperience())))
+                .fetch();
+    }
 
+    @Override
+    public Map<Long, Double> matchDeveloper(
+            List<Developer> developers, DeveloperMatchingDTO requestDTO) {
         Map<Long, Double> weight = new HashMap<>();
 
         // 사용언어, 기술스택
