@@ -65,7 +65,7 @@ naver:
     clovaSpeech:
       client-secret: ${NAVER_CLOVA_SPEECH_CLIENT_SECRET}
 openai:
-  model: gpt-3.5-turbo
+  model: gpt-4o
   api:
     key: ${OPENAI_API_KEY}
     url: "https://api.openai.com/v1/chat/completions"
@@ -127,7 +127,7 @@ naver:
     clovaSpeech:
       client-secret: ${NAVER_CLOVA_SPEECH_CLIENT_SECRET}
 openai:
-  model: gpt-3.5-turbo
+  model: gpt-4o
   api:
     key: ${OPENAI_API_KEY}
     url: "https://api.openai.com/v1/chat/completions"

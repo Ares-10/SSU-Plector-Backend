@@ -1,5 +1,6 @@
 package ssuPlector.service.designer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import ssuPlector.ai.openAI.service.ChatGptService;
 @Service
 @RequiredArgsConstructor
 public class DesignerServiceImpl implements DesignerService {
+    @Value("${openai.model}")
+    private String model;
 
     private final ChatGptService chatGptService;
 
@@ -43,7 +46,7 @@ public class DesignerServiceImpl implements DesignerService {
                         + imageInfo
                         + ">. "
                         + "Only give me the prompt.";
-        String imageGenerateQuery = chatGptService.standardChat(imageInfo, "gpt-4o");
+        String imageGenerateQuery = chatGptService.standardChat(imageInfo, model);
         return chatGptService.makeImage(imageGenerateQuery);
     }
 }
