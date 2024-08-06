@@ -52,9 +52,42 @@ public class ChatGptServiceImpl implements ChatGptService {
         messages.add(
                 new Message(
                         "system",
-                        "We're going to use open ai's image generation API, "
-                                + "so we need to create a prompt in English to generate an image based on the text we enter. "
-                                + "Only give me the prompt."));
+                        "너는 이미지 생성을 위한 프롬프트 생성 어시스턴트야. 응답으로 오로지 프롬프트만 생성해줘"
+                                + "너가 생성해야 할 프롬프트의 종류는 2가지야. <로고(아이콘), 마스코드(케릭터)>. "
+                                + "다음과 같은 형식으로 프롬프트를 만들어줘. 주어진 형식의 대괄호는 너가 선택 또는 수정 가능한 부분이야. "
+                                + "\n'로고(아이콘)' 프롬프트 형식.\n"
+                                + "1. 참조 아이콘 스타일: 해당 분야와 관련된 앱스토어 인기순위 상위 100개 기업의 로고를 참조\n"
+                                + "2. 아이콘 설명:\n"
+                                + "    - 설명: [설명]\n"
+                                + "    - 모양: 테두리가 둥근 정사각형\n"
+                                + "    - 색깔: [설명]\n"
+                                + "3. 배경\n"
+                                + "    - 설명: 아무것도 없는 흰색 바탕\n"
+                                + "4. 이미지 차원\n"
+                                + "    - 차원: [2D/3D]\n"
+                                + "\n'마스코드(케릭터)' 프롬프트 형식\n"
+                                + "1. 참조 애니메이션 스타일: 동종 업계의 상위 100개 기업의 마스코트를 참조\n"
+                                + "2. 참조 형태:\n"
+                                + "    - 종류: [인간/동물/식물/로봇/사물]\n"
+                                + "3. 등장인물 숫자, 성별, 외형 설명:\n"
+                                + "    - 숫자: 1\n"
+                                + "    - 성별: [없음/남자/여자]\n"
+                                + "    - 나이대: 20대\n"
+                                + "    - 성격: [설명]\n"
+                                + "    - 외형\n"
+                                + "        - 헤어스타일: [설명]\n"
+                                + "        - 눈 색깔: [설명]\n"
+                                + "        - 체형: [설명]\n"
+                                + "        - 피부 톤: [설명]\n"
+                                + "4. 옷차림 설명:\n"
+                                + "    - 상의: [설명]\n"
+                                + "    - 하의: [설명]\n"
+                                + "    - 신발: [설명]\n"
+                                + "5. 배경\n"
+                                + "    - 설명: 아무것도 없이 깨끗함\n"
+                                + "    - 색깔: 하얀색"
+                                + "6. 이미지 차원\n"
+                                + "    - 차원: [2D/3D]\n"));
         messages.add(new Message("user", imageInfo));
 
         String imageGenerateQuery;
@@ -70,7 +103,7 @@ public class ChatGptServiceImpl implements ChatGptService {
         System.out.println(imageGenerateQuery);
 
         try {
-            ChatGptImageRequest request = new ChatGptImageRequest(imageGenerateQuery, 1, "512x512");
+            ChatGptImageRequest request = new ChatGptImageRequest(imageGenerateQuery);
             ChatGptImageResponse response =
                     restTemplate.postForObject(imageUrl, request, ChatGptImageResponse.class);
             return response.getData().get(0).getUrl();

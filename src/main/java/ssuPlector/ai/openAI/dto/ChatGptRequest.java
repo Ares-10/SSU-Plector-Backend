@@ -27,8 +27,14 @@ public class ChatGptRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ChatGptImageRequest {
+        private String model = "dall-e-3";
         private String prompt;
-        private int n;
-        private String size;
+        private String size = "1024x1024";
+        private String quality = "standard";
+        private int n = 1;
+
+        public ChatGptImageRequest(String prompt) {
+            this.prompt = prompt;
+        }
     }
 }
