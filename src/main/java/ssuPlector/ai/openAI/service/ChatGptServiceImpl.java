@@ -100,8 +100,6 @@ public class ChatGptServiceImpl implements ChatGptService {
             throw new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR);
         }
 
-        System.out.println(imageGenerateQuery);
-
         try {
             ChatGptImageRequest request = new ChatGptImageRequest(imageGenerateQuery);
             ChatGptImageResponse response =
