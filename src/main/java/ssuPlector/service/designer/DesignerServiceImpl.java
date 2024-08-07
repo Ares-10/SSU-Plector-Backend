@@ -9,9 +9,6 @@ import ssuPlector.ai.openAI.service.ChatGptService;
 @Service
 @RequiredArgsConstructor
 public class DesignerServiceImpl implements DesignerService {
-    @Value("${openai.model}")
-    private String model;
-
     private final ChatGptService chatGptService;
 
     @Override
