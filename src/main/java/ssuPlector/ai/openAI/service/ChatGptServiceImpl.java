@@ -92,7 +92,7 @@ public class ChatGptServiceImpl implements ChatGptService {
 
         String imageGenerateQuery;
         try {
-            ChatGptCommentRequest request = new ChatGptCommentRequest("gpt-4o", messages);
+            ChatGptCommentRequest request = new ChatGptCommentRequest(model, messages);
             ChatGptCommentResponse response =
                     restTemplate.postForObject(apiUrl, request, ChatGptCommentResponse.class);
             imageGenerateQuery = response.getChoices().get(0).getMessage().getContent();
