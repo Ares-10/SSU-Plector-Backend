@@ -1,6 +1,5 @@
 package ssuPlector.service.designer;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;

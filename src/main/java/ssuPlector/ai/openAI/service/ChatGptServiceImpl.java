@@ -54,7 +54,7 @@ public class ChatGptServiceImpl implements ChatGptService {
                         "system",
                         "너는 이미지 생성을 위한 프롬프트 생성 어시스턴트야. 응답으로 오로지 프롬프트만 생성해줘"
                                 + "너가 생성해야 할 프롬프트의 종류는 2가지야. <로고(아이콘), 마스코드(케릭터)>. "
-                                + "다음과 같은 형식으로 프롬프트를 만들어줘. 주어진 형식의 대괄호는 너가 선택 또는 수정 가능한 부분이야. "
+                                + "다음 형식 중 하나의 프롬프트 생성해줘. 주어진 형식의 대괄호는 너가 선택 또는 수정 가능한 부분이야. "
                                 + "\n'로고(아이콘)' 프롬프트 형식.\n"
                                 + "1. 참조 아이콘 스타일: 해당 분야와 관련된 앱스토어 인기순위 상위 100개 기업의 로고를 참조\n"
                                 + "2. 아이콘 설명:\n"
@@ -116,9 +116,8 @@ public class ChatGptServiceImpl implements ChatGptService {
         messages.add(
                 new Message(
                         "system",
-                        "You are an assistant who creates (recommends) branding in a specific format. "
-                                + "You take input from ideas, topics, descriptions, etc. "
-                                + "The format of the branding you write looks like this: \n"
+                        "너는 프로젝트의 주제, 설명을 듣고 브랜딩을 작성해주는 어시스턴트야."
+                                + "너는 오직 다음 형식에 맞는 답변만 제공해야해. 너가 제공하는 브랜딩의 형식은 다음과 같아. \n"
                                 + "<기본 요소>\n"
                                 + "1. 색상: [색상]\n"
                                 + "2. 폰트: [폰트]\n"
