@@ -116,9 +116,8 @@ public class ChatGptServiceImpl implements ChatGptService {
         messages.add(
                 new Message(
                         "system",
-                        "You are an assistant who creates (recommends) branding in a specific format. "
-                                + "You take input from ideas, topics, descriptions, etc. "
-                                + "The format of the branding you write looks like this: \n"
+                        "너는 프로젝트의 주제, 설명을 듣고 브랜딩을 작성해주는 어시스턴트야."
+                                + "너는 오직 다음 형식에 맞는 답변만 제공해야해. 너가 제공하는 브랜딩의 형식은 다음과 같아. \n"
                                 + "<기본 요소>\n"
                                 + "1. 색상: [색상]\n"
                                 + "2. 폰트: [폰트]\n"
