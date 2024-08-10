@@ -127,6 +127,9 @@ public class DeveloperConverter {
                 .id(developer.getId())
                 .name(developer.getName())
                 .email(developer.getEmail())
+                .part1(developer.getPart1())
+                .part2(developer.getPart2())
+                .shortIntro(developer.getShortIntro())
                 .build();
     }
 }

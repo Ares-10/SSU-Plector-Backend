@@ -81,5 +81,8 @@ public class DeveloperDTO {
         Long id;
         String name;
         String email;
+        Part part1;
+        Part part2;
+        String shortIntro;
     }
 }
