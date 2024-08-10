@@ -12,14 +12,10 @@
 
 ## 🌿SSU-Plector 소개 
 <img src="https://github.com/SSU-Plector/SSU-Plector-Backend/assets/110217133/e5533377-8192-4cf3-aeff-ca2588a16cf1" alt="메인" style="width: 82%; height: auto; flex: 1;">
+<img src="https://github.com//user-attachments/assets/ac21d722-f672-477e-b5f0-3d2da5dc5369" alt="소개" style="width: 82%; height: auto; flex: 1;">
 
 <br>
 
-### 🌿기존의 문제점
-<img src="https://github.com/SSU-Plector/SSU-Plector-Backend/assets/110217133/793f12b7-b327-4be8-8599-82c1186057c3" alt="메인" style="width: 82%; height: auto; flex: 1;">
-<img src="https://github.com/SSU-Plector/SSU-Plector-Backend/assets/110217133/f1d4d686-95b7-4381-9b0f-54054d241eea" alt="메인" style="width: 82%; height: auto; flex: 1;">
-
-<br>
 
 ### 🌿주요 기능 
 <div style="display: flex; justify-content: space-around; align-items: center;">
@@ -27,9 +23,8 @@
     <img src="https://github.com/SSU-Plector/SSU-Plector-Backend/assets/110217133/a8e11f7d-96df-4c78-87df-fef1dd9ab9a8" alt="설명_플젝검색" style="width: 20%; height: auto; flex: 1;">
     <img src="https://github.com/SSU-Plector/SSU-Plector-Backend/assets/110217133/239b547f-95f1-494e-a20a-e5016144aaeb" alt="설명_개발자상세" style="width: 20%; height: auto; flex: 1;">
     <img src="https://github.com/SSU-Plector/SSU-Plector-Backend/assets/110217133/7134b45c-7382-4262-a81f-414627b5a2f7" alt="설명_개발자검색" style="width: 20%; height: auto; flex: 1;">
+    <img src="https://github.com/user-attachments/assets/190452b3-5bbd-4025-b19b-f8116c8f73cc" alt="설명_AI" ; style="width: 80%;height: auto; flex: 1;">
 </div>
-
-
 
 <br>
 
@@ -55,6 +50,9 @@
 
 <br>
 
+## 🌿시스템 아키텍쳐
+<img src="https://github.com/user-attachments/assets/f2e08041-b718-4a93-85ea-caf915d3ed97" alt="시스템 아키텍쳐" style="width: 100%; height: auto;">
+
 ## 🌿 Back-end 팀 소개
 
 <div align="center">
@@ -65,4 +63,3 @@
 | [@chanmin-00](https://github.com/chanmin-00) | [@Ares](https://github.com/Ares) | [@88dldl](https://github.com/88dldl) |
 
 </div>
-
