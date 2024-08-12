@@ -64,6 +64,7 @@ naver:
   cloud:
     clovaSpeech:
       client-secret: ${NAVER_CLOVA_SPEECH_CLIENT_SECRET}
+      invoke-url : ${NAVER_CLOVA_SPEECH_INVOKE_URL}
 openai:
   model: gpt-4o
   api:
@@ -126,6 +127,7 @@ naver:
   cloud:
     clovaSpeech:
       client-secret: ${NAVER_CLOVA_SPEECH_CLIENT_SECRET}
+      invoke-url: ${NAVER_CLOVA_SPEECH_INVOKE_URL}
 openai:
   model: gpt-4o
   api:
