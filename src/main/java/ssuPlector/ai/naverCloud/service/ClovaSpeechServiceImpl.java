@@ -29,13 +29,11 @@ public class ClovaSpeechServiceImpl implements ClovaSpeechService {
     @Value("${naver.cloud.clovaSpeech.client-secret}")
     String clientSecret;
 
-    public ClovaSpeechServiceImpl(ObjectMapper objectMapper) {
+    public ClovaSpeechServiceImpl(
+            ObjectMapper objectMapper,
+            @Value("${naver.cloud.clovaSpeech.invoke-url}") String invokeUrl) {
         this.objectMapper = objectMapper;
-        this.webClient =
-                WebClient.builder()
-                        .baseUrl(
-                                "https://clovaspeech-gw.ncloud.com/external/v1/8450/a2c84d3e94793711c615c18275ecf83ebe3be19059abd2d901513e1a749035da")
-                        .build();
+        this.webClient = WebClient.builder().baseUrl(invokeUrl).build();
     }
 
     @Override
