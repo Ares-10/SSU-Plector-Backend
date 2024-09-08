@@ -4,11 +4,11 @@ import static ssuPlector.dto.request.ProjectDTO.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import ssuPlector.domain.Project;
 import ssuPlector.dto.request.ProjectDTO.ProjectListRequestDto;
-import ssuPlector.dto.response.ProjectDTO.ProjectListResponseDto;
 
 public interface ProjectService {
 
@@ -22,7 +22,7 @@ public interface ProjectService {
 
     boolean existsByProjectId(Long id);
 
-    ProjectListResponseDto getProjectList(ProjectListRequestDto requestDto, int page);
+    Page<Project> getProjectList(ProjectListRequestDto requestDto, int page);
 
     Long updateProject(Long projectId, ProjectUpdateRequestDTO requestDTO);
 }

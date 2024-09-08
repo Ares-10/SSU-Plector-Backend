@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,6 @@ import ssuPlector.domain.category.DevTools;
 import ssuPlector.domain.category.Part;
 import ssuPlector.domain.category.TechStack;
 import ssuPlector.dto.request.ProjectDTO.ProjectListRequestDto;
-import ssuPlector.dto.response.ProjectDTO.ProjectListResponseDto;
 import ssuPlector.global.exception.GlobalException;
 import ssuPlector.global.response.code.GlobalErrorCode;
 import ssuPlector.redis.service.ProjectHitsService;
@@ -77,18 +77,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectListResponseDto getProjectList(ProjectListRequestDto requestDto, int page) {
+    public Page<Project> getProjectList(ProjectListRequestDto requestDto, int page) {
         Pageable pageable = PageRequest.of(page, 4);
         String category = requestDto.getCategory();
         if ((category != null && !category.isBlank())
                 && !EnumUtils.isValidEnum(Category.class, category))
             throw new GlobalException(GlobalErrorCode.CATEGORY_NOT_FOUND);
-        return new ProjectListResponseDto(
-                projectRepository.findProjects(
-                        requestDto.getSearchString(),
-                        requestDto.getCategory(),
-                        requestDto.getSortType(),
-                        pageable));
+        return projectRepository.findProjects(
+                requestDto.getSearchString(),
+                requestDto.getCategory(),
+                requestDto.getSortType(),
+                pageable);
     }
 
     @Override

@@ -3,8 +3,10 @@ package ssuPlector.converter;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import ssuPlector.domain.Image;
 import ssuPlector.domain.Project;
 import ssuPlector.domain.ProjectDeveloper;
 import ssuPlector.domain.category.DevLanguage;
@@ -12,7 +14,9 @@ import ssuPlector.domain.category.DevTools;
 import ssuPlector.domain.category.TechStack;
 import ssuPlector.dto.request.ProjectDTO.ProjectRequestDTO;
 import ssuPlector.dto.response.ProjectDTO.ProjectDetailDTO;
+import ssuPlector.dto.response.ProjectDTO.ProjectListResponseDto;
 import ssuPlector.dto.response.ProjectDTO.ProjectPreviewDTO;
+import ssuPlector.dto.response.ProjectDTO.ProjectResponseDto;
 
 @Component
 public class ProjectConverter {
@@ -69,6 +73,36 @@ public class ProjectConverter {
                 .languageList(devLanguages)
                 .devToolList(devTools)
                 .techStackList(techStacks)
+                .build();
+    }
+
+    public static ProjectResponseDto toProjectResponseDto(Project project) {
+        return ProjectResponseDto.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .imagePath(
+                        project.getImageList() == null
+                                ? null
+                                : project.getImageList().stream()
+                                        .filter(Image::getIsMainImage)
+                                        .findFirst()
+                                        .map(Image::getImagePath)
+                                        .orElse(null))
+                .shortIntro(project.getShortIntro())
+                .category(project.getCategory().toString())
+                .hits(project.getHits())
+                .build();
+    }
+
+    public static ProjectListResponseDto toProjectListDto(Page<Project> projectPage) {
+        return ProjectListResponseDto.builder()
+                .totalPage(projectPage.getTotalPages())
+                .currentElement(projectPage.getNumberOfElements())
+                .totalElement(projectPage.getTotalElements())
+                .projectResponseDtoList(
+                        projectPage.getContent().stream()
+                                .map(ProjectConverter::toProjectResponseDto)
+                                .collect(Collectors.toList()))
                 .build();
     }
 }
