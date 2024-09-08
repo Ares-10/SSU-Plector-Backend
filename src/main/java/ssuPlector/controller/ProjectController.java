@@ -4,6 +4,7 @@ import static ssuPlector.dto.request.ProjectDTO.*;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,9 @@ public class ProjectController {
     public ApiResponse<ProjectListResponseDto> getProjectList(
             @Valid @ModelAttribute ProjectListRequestDto requestDto,
             @RequestParam(value = "page", defaultValue = "0", required = false) int page) {
+        Page<Project> projectList = projectService.getProjectList(requestDto, page);
         return ApiResponse.onSuccess(
-                "프로젝트 리스트 조회 성공", projectService.getProjectList(requestDto, page));
+                "프로젝트 리스트 조회 성공", ProjectConverter.toProjectListDto(projectList));
     }
 
     @Operation(summary = "프로젝트 생성, 저장 API", description = "프로젝트를 생성 후 저장합니다._찬민")
