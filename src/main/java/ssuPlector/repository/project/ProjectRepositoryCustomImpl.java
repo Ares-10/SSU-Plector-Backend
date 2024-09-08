@@ -1,15 +1,18 @@
 package ssuPlector.repository.project;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
-import com.querydsl.core.QueryResults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 import ssuPlector.domain.Project;
+import ssuPlector.domain.QImage;
 import ssuPlector.domain.QProject;
 import ssuPlector.domain.category.Category;
 
@@ -21,15 +24,22 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
     @Override
     public Page<Project> findProjects(
             String searchString, String category, String sortType, Pageable pageable) {
+
         QProject project = QProject.project;
-        JPAQuery<Project> query = queryFactory.selectFrom(project);
+        QImage image = QImage.image;
+
+        JPAQuery<Project> query =
+                queryFactory.selectFrom(project).leftJoin(project.imageList, image).fetchJoin();
+        JPAQuery<Long> countQuery = queryFactory.selectFrom(project).select(Wildcard.count);
 
         if (searchString != null && !searchString.isBlank()) {
             query.where(project.name.containsIgnoreCase(searchString));
+            countQuery.where(project.name.containsIgnoreCase(searchString));
         }
 
         if (category != null && !category.isBlank()) {
             query.where(project.category.eq(Category.valueOf(category)));
+            countQuery.where(project.name.containsIgnoreCase(searchString));
         }
 
         if (sortType != null && !sortType.isBlank()) {
@@ -44,9 +54,8 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
             }
         }
 
-        QueryResults<Project> results =
-                query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
-
-        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+        List<Project> content =
+                query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 }
